@@ -110,7 +110,7 @@
 - name: echo template
   ansible.builtin.debug:
     msg: "{{ k8s_application_set_yaml }}"
-    
+
 - name: Add ArgoCD ApplicationSet on organisation
   kubernetes.core.k8s:
     state: present
