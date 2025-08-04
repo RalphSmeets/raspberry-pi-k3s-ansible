@@ -1,10 +1,5 @@
 # Build a Kubernetes cluster using K3s via Ansible
 
-export VAULT_ADDR=https://vault.k8s-frambozen.nl
-export VAULT_TOKEN=hvs.W15uVdOrNmindAkIJQztaVoK
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export KUBECONFIG=~/.kube/config.pro.new
-
 Author: <https://github.com/itwars>  
 Current Maintainer: <https://github.com/dereknola>
 
