@@ -19,7 +19,7 @@ data:
             - -name
             - kustomization.yml
       generate:
-        command:       
+        command:
           - sh
           - "-c"
           - "kustomize build . | argocd-vault-plugin generate - -c /home/argocd/cmp-server/config/vault-configuration.yaml"
@@ -34,7 +34,7 @@ data:
       allowConcurrency: true
       discover:
         find:
-          command: 
+          command:
             - sh
             - "-c"
             - "find . -name 'helm-application.yaml' && find . -name 'values.yaml'"

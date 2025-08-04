@@ -2,7 +2,7 @@
 # Define all the specific k3s variables
 k3s_cluster:
   version: v1.30.2+k3s1
-  token: "0/GbTTn3tz6PZtwD2NAHwCo0bzzv81OON/pkLJBIy+uLCe0oVqCnR7hWD0L012533y7g+2X06A4MycDiFctZoQ=="  
+  token: "0/GbTTn3tz6PZtwD2NAHwCo0bzzv81OON/pkLJBIy+uLCe0oVqCnR7hWD0L012533y7g+2X06A4MycDiFctZoQ=="
   api_endpoint: "{{ hostvars[groups['k3s_cluster.server'][0]]['ansible_host'] | default(groups['k3s_cluster.server'][0]) }}"
   api_port: 6443
   use_external_database: False

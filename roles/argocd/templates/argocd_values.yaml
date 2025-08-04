@@ -419,7 +419,7 @@ configs:
   ## - https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters
   ## - https://argo-cd.readthedocs.io/en/stable/operator-manual/security/#external-cluster-credentials
   ## - https://argo-cd.readthedocs.io/en/stable/user-guide/projects/#project-scoped-repositories-and-clusters
-  clusterCredentials: 
+  clusterCredentials:
 {{ argocd.cluster.credentials | to_nice_yaml(width=1337) | indent(4,true) }}
 
   # DEPRECATED - Moved to configs.ssh.annotations
@@ -1912,7 +1912,7 @@ server:
       #         name: use-annotation
 
     # -- Ingress TLS configuration
-    tls: 
+    tls:
       - secretName: argocd-{{ ingress_tls.prod.tls_secretname_postfix }}
         hosts:
         - "{{ argocd_alias }}.{{ universe.environment }}.{{ universe.domain }}"
@@ -2130,7 +2130,7 @@ repoServer:
           name: plugins
         - mountPath: /tmp
           name: tmp
-        
+
         # Register plugins into sidecar
         - mountPath: /home/argocd/cmp-server/config/plugin.yaml
           subPath: avp-helm.yaml
@@ -2141,7 +2141,7 @@ repoServer:
           subPath: argocd-vault-plugin
           name: custom-tools
 
-        # Mount vault config secret!  
+        # Mount vault config secret!
         - mountPath: /home/argocd/cmp-server/config/vault-configuration.yaml
           subPath: vault-configuration.yaml
           name: vault-config
@@ -2159,7 +2159,7 @@ repoServer:
           name: plugins
         - mountPath: /tmp
           name: tmp
-        
+
         # Register plugins into sidecar
         - mountPath: /home/argocd/cmp-server/config/plugin.yaml
           subPath: avp-kustomize.yaml
@@ -2170,7 +2170,7 @@ repoServer:
           subPath: argocd-vault-plugin
           name: custom-tools
 
-        # Mount vault config secret!  
+        # Mount vault config secret!
         - mountPath: /home/argocd/cmp-server/config/vault-configuration.yaml
           subPath: vault-configuration.yaml
           name: vault-config
@@ -2197,7 +2197,7 @@ repoServer:
           subPath: argocd-vault-plugin
           name: custom-tools
 
-        # Mount vault config secret!  
+        # Mount vault config secret!
         - mountPath: /home/argocd/cmp-server/config/vault-configuration.yaml
           subPath: vault-configuration.yaml
           name: vault-config
@@ -2214,7 +2214,7 @@ repoServer:
         - >-
           curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$(AVP_VERSION)/argocd-vault-plugin_$(AVP_VERSION)_linux_arm64 -o argocd-vault-plugin &&
           chmod +x argocd-vault-plugin &&
-          mv argocd-vault-plugin /custom-tools/ 
+          mv argocd-vault-plugin /custom-tools/
       volumeMounts:
         - mountPath: /custom-tools
           name: custom-tools
