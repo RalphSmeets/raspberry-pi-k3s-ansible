@@ -52,7 +52,7 @@ global:
 {{ platform_office_hour_support_devops_labels | to_nice_yaml(width=1337) | indent(4,true) }}
 
   # -- Number of old deployment ReplicaSets to retain. The rest will be garbage collected.
-  revisionHistoryLimit: 3
+  # revisionHistoryLimit: 3
 
   # Default image used by all components
   image:
