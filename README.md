@@ -118,7 +118,7 @@ The format of the datastore-endpoint parameter is dependent upon the datastore b
 
 ## Upgrading
 
-A playbook is provided to upgrade K3s on all nodes in the cluster. To use it, update `k3s_version` with the desired version in `inventory.yml` and run one of the following commands. Again, the syntax is slightly different depending on whether you installed `k3s-ansible` with `ansible-galaxy` or if you run the playbook from within the cloned git repository:
+A playbook is provided to upgrade K3s on all nodes in the cluster. To use it, update `k3s_cluster.version` with the desired version in `inventory.yml` and run one of the following commands. Again, the syntax is slightly different depending on whether you installed `k3s-ansible` with `ansible-galaxy` or if you run the playbook from within the cloned git repository:
 
 
 *Installed with ansible-galaxy*
@@ -156,7 +156,7 @@ It is assumed that the control node has access to the internet. The playbook wil
 
 ## Kubeconfig
 
-After successful bringup, the kubeconfig of the cluster is copied to the control node  and merged with `~/.kube/config` under the `k3s-ansible` context.
+After successful bringup, the k3s_cluster.kubeconfig of the cluster is copied to the control node  and merged with `~/.kube/config` under the `k3s-ansible` context.
 Assuming you have [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) installed, you can confirm access to your **Kubernetes** cluster with the following:
 
 ```bash
@@ -164,13 +164,16 @@ kubectl config use-context k3s-ansible
 kubectl get nodes
 ```
 
-If you wish for your kubeconfig to be copied elsewhere and not merged, you can set the `kubeconfig` variable in `inventory.yml` to the desired path.
+If you wish for your k3s_cluster.kubeconfig to be copied elsewhere and not merged, you can set the `k3s_cluster.kubeconfig` variable in `inventory.yml` to the desired path.
 
 ## Local Testing
 
 A Vagrantfile is provided that provision a 5 nodes cluster using Vagrant (LibVirt or Virtualbox as provider). To use it:
 
 ```bash
+scp debian@master_ip:~/.kube/config ~/.kube/config
+```
+
 vagrant up
 ```
 
@@ -191,3 +194,20 @@ See these other projects:
 - https://github.com/jon-stumpf/k3s-ansible
 - https://github.com/alexellis/k3sup
 - https://github.com/axivo/k3s-cluster
+
+
+# Manual commands:
+- First install ArgoCD
+```
+kustomize build argo-cd/overlays/production | kubectl apply --filename -
+
+kubectl --namespace argocd rollout status deployment argocd-server
+export PASS=$(kubectl --namespace argocd get secret argocd-initial-admin-secret --output jsonpath="{.data.password}" | base64 --decode)
+argocd login --insecure --username admin --password $PASS -grpc-web argocd.$BASE_HOST
+
+argocd account update-password --current-password $PASS --new-password admin
+kubectl apply --filename project.yaml
+kubectl apply --filename apps.yaml
+
+
+```

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vault-configuration
+  namespace: {{ argocd_namespace }}
+  labels:
+{{ platform_office_hour_support_devops_labels | to_nice_yaml(width=1337) | indent(4,true) }}
+type: Opaque
+data:
+  vault-configuration.yaml: {{ argocd_vault_configuration | to_nice_yaml(width=1337) | b64encode }}
+    

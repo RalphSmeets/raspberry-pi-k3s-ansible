@@ -1,0 +1,15 @@
+---
+k3s_cluster:
+  children:
+    server:
+      hosts:
+        192.168.185.165:
+        192.168.185.166:
+        192.168.185.167:
+    agent:
+      hosts:
+        192.168.185.168:
+
+helm:
+  hosts:
+    localhost:

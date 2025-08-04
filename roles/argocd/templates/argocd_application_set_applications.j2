@@ -1,0 +1,105 @@
+{% for application_type in application_set.types %}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: '{{ application_set.name | lower }}-{{ application_type.type }}-applications'
+  namespace: {{ argocd_namespace }}
+  labels:
+{{ platform_office_hour_support_devops_labels | to_nice_yaml(width=1337) | indent(4,true) }}
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+{% if "github_organisation" in application_set %}
+    - matrix:
+        generators:
+          - scmProvider:
+              github:
+                allBranches: false 
+                organization: '{{ application_set.github_organisation }}'
+              filters:
+  {% if application_type.type == 'helm' %}
+                - pathsExist:
+                    - charts
+  {% else %}
+                - pathExists:
+                    - base/kustomize.yaml
+  {% endif %}
+          - git:
+              files:
+  {% for path in application_type.git_files_path %}
+                - path: '{{ path }}'
+  {% endfor %}
+  {% raw %}
+              repoURL: '{{ .url }}'
+              revision: HEAD
+              values:
+                repoURL: '{{ .url }}'
+                overlay: '{{ index .path.segments }}'
+                application: {{ .repository }}
+                prefix: '{{ index .path.segments 1 }}'
+                suffix: '{{ has ( index .path.segments 2 ) (list "ont" "itest") | ternary ( last .path.segments | print "-%s" ) "" }}'
+                cluster: '{{ has .values.overlay ( list "pro") | ternary "pro-cluster" "dev-cluster" }}'
+                namespace: '{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary "dev-" ""}}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary .repository .values.overlay }}{{ .values.suffix }}'
+  {% endraw %}
+{% else %}
+    - git:
+        repoURL: {{ application_set.repo_url }}
+        revision: HEAD
+        files:
+  {% for path in application_type.git_files_path %}
+          - path: '{{ path }}'
+  {% endfor %}
+  {% raw %}
+        values:
+          repoURL: {% endraw %}{{ application_set.repo_url }}{% raw %}
+          team: '{{ index .path.segments 0 }}'
+          application: '{{ index .path.segments 1 }}'
+          overlay: '{{ index .path.segments 2 }}'
+          prefix: '{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary "dev-" "" }}'
+          suffix: '{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( last .path.segments | print "-%s" ) "" }}'
+          cluster: '{{ has ( index .path.segments 2 ) ( list "pro") | ternary "pro-cluster" "dev-cluster" }}'
+          namespace: '{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary "dev-" ""}}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( index .path.segments 0 ) (index .path.segments 2 ) }}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( last .path.segments | print "-%s" ) "" }}'
+  {% endraw %}
+{% endif %}
+{% raw %}
+  template:
+    metadata:
+      name: '{{ .values.prefix }}{{ .values.team }}-{{ .values.application }}-{{ .chart.name }}{{ .values.suffix }}' 
+    spec:
+      destination:
+        name: '{{ .values.cluster }}'
+        namespace: '{{ .values.namespace }}'
+      project: '{{ .values.overlay }}'
+{% endraw %}
+{% if application_type.type == 'helm' %}
+{% raw %}
+      source:
+        repoURL: '{{ .values.repoURL }}'
+        path: "./"
+        plugin:
+          env:
+            - name: HELM_REPO_URL
+              value: '{{ .chart.repo_url }}'
+            - name: HELM_CHART_NAME
+              value: '{{ .chart.name }}'
+            - name: HELM_CHART_VERSION
+              value: '{{ .chart.version }}'
+            - name: HELM_VALUES_FILE
+              value: "{{ .path.path }}/values.yaml"
+{% endraw %}
+{% else %}
+{% raw %}
+      source:
+        repoURL: 'blaat'
+        path: 'overlays/{{ .values.overlay }}'
+{% endraw %}
+{% endif %}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true     
+{% endfor %}

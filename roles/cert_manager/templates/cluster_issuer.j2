@@ -1,0 +1,28 @@
+{% set environments = [ "prod", "staging" ] %}
+{% set environment = "" %}
+{% for type in environments %}
+{% if "staging" == type %}
+{% set environment = "staging-" %}
+{% endif %}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-{{ type }}
+spec:
+  acme:
+    server: https://acme-{{ environment }}v02.api.letsencrypt.org/directory
+    email: {{ cert_manager.owner.email }}
+    privateKeySecretRef:
+      name: letsencrypt-{{ type }}
+    solvers:
+      - dns01:
+          cloudflare:
+            email: "{{ cert_manager.owner.email }}"
+            apiTokenSecretRef:
+              name: cloudflare-token-secret
+              key: cloudflare-token
+        selector:
+          dnsZones:
+          - "{{ cert_manager.dns_zones }}"
+{% endfor %}

@@ -1,0 +1,100 @@
+alertmanager:
+  ingress:
+    enabled: true
+
+    ingresssClassName: traefik
+
+    annotations: 
+{{ ingress_tls.prod.annotations | to_nice_yaml(width=1337) | indent(6,true) }}
+
+    hosts:
+      - {{ monitoring_ingress.host }}
+
+    paths:
+      - /alert-manager
+
+    pathType: ImplementationSpecific
+
+    tls:
+      - secretName: {{ monitoring_ingress.tls_secretname }}
+        hosts:
+        - {{ monitoring_ingress.host }}
+
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: nfs-client
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+    externalUrl: https://{{ monitoring_ingress.host }}/alert-manager
+    routePrefix: /alert-manager
+    
+grafana:
+  ingress:
+    enabled: true
+
+    ingresssClassName: traefik
+
+    annotations: 
+{{ ingress_tls.prod.annotations | to_nice_yaml(width=1337) | indent(6,true) }}
+
+    hosts:
+      - {{ monitoring_ingress.host }}
+    path: /grafana
+
+    tls:
+      - secretName: {{ monitoring_ingress.tls_secretname }}
+        hosts:
+        - {{ monitoring_ingress.host }}
+
+  grafana.ini:
+    server:
+      domain: {{ monitoring_ingress.host }}
+      root_url: https://{{ monitoring_ingress.host }}/grafana
+      serve_from_sub_path: true
+      
+  sidecar:
+    dashboards:
+      enabled: true
+      label: monitoring.grafana.dashboards
+      searchNamespace: ALL
+
+kube-state-metrics:
+  replicas: 1
+
+prometheus:
+  ingress:
+    enabled: true
+    ingresssClassName: traefik
+
+    annotations: 
+{{ ingress_tls.prod.annotations | to_nice_yaml(width=1337) | indent(6,true) }}
+
+    hosts:
+      - {{ monitoring_ingress.host }}
+    paths:
+      - /prometheus
+    pathType: ImplementationSpecific
+
+    tls:
+      - secretName: {{ monitoring_ingress.tls_secretname }}
+        hosts:
+        - {{ monitoring_ingress.host }}
+
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: nfs-client
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+    exterrnalUrl: 'https://{{ monitoring_ingress.host }}/prometheus'
+    routePrefix: '/prometheus'
+
+    

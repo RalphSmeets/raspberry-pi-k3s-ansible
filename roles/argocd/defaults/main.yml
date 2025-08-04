@@ -1,0 +1,32 @@
+---
+# code language=ansible
+argocd_helm_repo_name: argo
+argocd_helm_repo_chart: "https://argoproj.github.io/argo-helm"
+argocd_helm_chart_version: 7.6.11
+argocd_helm_chart: "{{ argocd_helm_repo_name }}/argo-cd"
+
+argocd_namespace: argocd
+argocd_alias: argocd
+
+argocd_helm_ingress: true
+
+# Define the images that should be used by plugins:
+argocd_init_container_images:
+  download_tools: "registry.access.redhat.com/ubi8/ubi-minimal:8.10-1086"
+
+argocd_extra_container_images:
+  helm_avp: "quay.io/argoproj/argocd:latest"
+  kustomize: "quay.io/argoproj/argocd:latest"
+
+argocd_webhook:
+  name: "ArgoCD {{ universe.environment | upper }} webhook"
+  url: "https://argocd.apps.{{ universe.environment }}.{{ universe.domain }}/api/webhook"
+  event: "repo:refs_changed"
+
+argocd_vault_configuration:
+  AVP_TYPE: "vault"
+  VAULT_ADDR: "{{ vault_options.url }}"
+  AVP_AUTH_TYPE: "approle"
+  AVP_ROLE_ID: "{{ argocd.avp.role_id }}"
+  AVP_SECRET_ID: "{{ argocd.avp.secret_id }}"
+  AVP_KV_VERSION: 2

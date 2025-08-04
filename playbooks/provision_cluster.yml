@@ -1,0 +1,13 @@
+---
+# code language=ansible
+
+- name: Install tooling on cluster
+  hosts: helm
+  connection: local
+  gather_facts: false
+  roles:
+    - role: cert_manager
+    - role: nfs_client
+    - role: monitoring
+  environment:
+    KUBECONFIG: "{{ kubeconfig }}"

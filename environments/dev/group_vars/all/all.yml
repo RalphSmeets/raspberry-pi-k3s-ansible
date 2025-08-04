@@ -1,0 +1,8 @@
+---
+universe:
+  domain: "k8s-frambozen.nl"
+  environment: "dev"
+
+ansible_user: "root"
+
+kubeconfig: "~/.kube/k3s-dev-config.yaml"
