@@ -9,7 +9,7 @@
 - name: Add docker secret
   kubernetes.core.k8s:
     state: present
-    namespace: "pro"
+    namespace: "{{ argocd_namespace }}"
     definition:
       apiVersion: v1
       kind: Secret
@@ -54,10 +54,10 @@
       kind: Secret
       type: Opaque
       metadata:
-        name: argocd-github-password
+        name: argocd-github-token
         namespace: "{{ argocd_namespace }}"
       data:
-        password: "{{ argocd.github.password | b64encode }}"
+        token: "{{ argocd.github.token | b64encode }}"
 
 - name: Setup repository credential templates
   ansible.builtin.include_tasks:
@@ -101,13 +101,13 @@
     loop_var: argocd_app_project
 
 - name: Set ArgoCD ApplicationSet fact on organisation
-  set_fact:
+  ansible.builtin.set_fact:
     k8s_application_set_yaml: '{{ lookup("template", "argocd_application_set.j2") }}'
   loop: "{{ argocd.application_sources }}"
   loop_control:
     loop_var: application_source
 
-- name: echo template
+- name: Echo template
   ansible.builtin.debug:
     msg: "{{ k8s_application_set_yaml }}"
 

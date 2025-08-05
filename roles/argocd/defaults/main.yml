@@ -2,7 +2,7 @@
 # code language=ansible
 argocd_helm_repo_name: argo
 argocd_helm_repo_chart: "https://argoproj.github.io/argo-helm"
-argocd_helm_chart_version: 7.6.11
+argocd_helm_chart_version: 8.2.5
 argocd_helm_chart: "{{ argocd_helm_repo_name }}/argo-cd"
 
 argocd_namespace: argocd

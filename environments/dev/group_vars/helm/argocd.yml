@@ -7,8 +7,10 @@ argocd:
 
   github:
     projects:
-      - name: k8s-deployements
+      - name: k8s-deployments
         url: "{{ git_clone_ssh_url }}:RalphSmeets"
+      - name: k8s-frambozen
+        url: "{{ git_clone_ssh_url}}:K8S-Frambozen"
     ssh_key: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_private_key'] }}"
     known_hosts: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_known_hosts'] }}"
     webhook:
@@ -16,7 +18,7 @@ argocd:
     token: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_token'] }}"
     username: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_username'] }}"
     password: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_password'] }}"
-  # vault.k3s_cluster.token: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/all/vault_k3s_cluster,', **vault_options )['secret']['token_value'] }}"
+
   avp:
     role_id: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['avp_role_id'] }}"
     secret_id: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['avp_secret_id'] }}"
