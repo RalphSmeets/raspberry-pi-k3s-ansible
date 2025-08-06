@@ -354,7 +354,7 @@ configs:
 
   # Repository TLS certificates
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories-using-self-signed-tls-certificates-or-are-signed-by-custom-ca
-{% if "pki2" in argocd %}
+{% if "tls" in argocd %}
   tls:
     # -- Annotations to be added to argocd-tls-certs-cm configmap
     annotations: {}
@@ -362,10 +362,16 @@ configs:
     # -- TLS certificates for Git repositories
     # @default -- `{}` (See [values.yaml])
     certificates:
-      dockerhub.io: |
-        {{ argocd.pki2.ca_cert | join('\n        ') }}
-      github.tools.{{ universe.domain }}: |
-        {{ argocd.pki2.ca_cert | join('\n        ') }}
+{{ argocd.tls.certificates | to_nice_yaml(width=1337) | indent(6,true) }}
+
+    # -- If true, the argocd-tls-certs-cm configmap will be created
+    create: true
+
+    # -- If true, the argocd-tls-certs-cm configmap will be created with a secret
+    createSecret: false
+
+    # -- If true, the argocd-tls-certs-cm configmap will be created with annotations
+    createAnnotations: false
 {% else %}
   tls: {}
 {% endif %}

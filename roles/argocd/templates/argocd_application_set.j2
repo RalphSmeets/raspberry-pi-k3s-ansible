@@ -18,9 +18,6 @@ spec:
               github:
                 allBranches: false 
                 organization: '{{ application_source.organisation }}'
-                tokenRef:
-                  secretName: argocd-github-token
-                  key: token
               filters:
 {% if application_source_type.name == 'helm' %}
                 - pathsExist:
