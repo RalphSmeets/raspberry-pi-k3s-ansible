@@ -26,7 +26,7 @@ argocd:
   
   tls:
     certificates:
-      - github_api: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_api_pem'] }}"
+      github_api: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['github_api_pem'] }}"
 # Argo CD needs to be able to connect to our private repositories. This is done using a repository template. This
 # template needs a name and the base of the url of the repository.
 
