@@ -37,7 +37,7 @@ data:
           command:
             - sh
             - "-c"
-            - "find . -name 'Chart.yaml' && find . -name 'values.yaml'"
+            - "find . -name 'helm-source.yaml' && find . -name 'values.yaml'"
       generate:
         command:
           - sh
