@@ -136,13 +136,6 @@ argocd:
         prefix: '{% raw %}{{ .repository }}{% endraw %}'
         suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}'
         cluster: '{% raw %}{{ has ( index .path.segments 2 ) ( list "production") | ternary "pro-cluster" "dev-cluster" }}{% endraw %}'
-        namespace: |-
-          {% raw %}
-          {{ .repository }}
-          {{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary .path.segments 2 "" }}
-          {{ has ( index .path.segments 2 ) (list "development" ) | ternary "-dev-" ""}}
-          {{ has ( index .path.segments 2 ) (list "test") | ternary "-tst" "" }}
-          {{ has ( index .path.segments 2 ) (list "acceptance" ) | ternary "-acc" ""}}
-          {{ has ( index .path.segments 2 ) (list "development") | ternary ( last .path.segments | printf "-%s" ) "" }}
-          {% endraw %}
+        namespace: '{% raw %}{{ .repository }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary .path.segments 2 "" }}{{ has ( index .path.segments 2 ) (list "development" ) | ternary "-dev-" ""}}{{ has ( index .path.segments 2 ) (list "test") | ternary "-tst" "" }}{{ has ( index .path.segments 2 ) (list "acceptance" ) | ternary "-acc" ""}}{{ has ( index .path.segments 2 ) (list "development") | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}''
+
  
