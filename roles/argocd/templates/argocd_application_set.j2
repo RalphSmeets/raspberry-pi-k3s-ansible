@@ -36,14 +36,7 @@ spec:
 {% endraw %}
               revision: HEAD
               values:
-                team: '{{ application_source.mapping.team }}'
-                repoURL: '{% raw %}{{ .url }}{% endraw %}}'
-                overlay: '{{ application_source.mapping.overlay }}'
-                application: '{{ application_source.mapping.application }}'
-                prefix: '{{ application_source.mapping.prefix }}'
-                suffix: '{{ application_source.mapping.suffix}}'
-                cluster: '{{ application_source.mapping.cluster }}'
-                namespace: '{{ application_source.mapping.namespace }}'
+                repoURL: '{% raw %}{{ .url }}{% endraw %}'
 {% else %}
     - git:
         repoURL: {{ application_source.repo_url }}
@@ -53,25 +46,16 @@ spec:
           - path: '{{ path }}'
 {% endfor %}
         values:
-          team: '{{ application_source.mapping.team }}'
           repoURL: '{{ application_source.repo_url }}'
-          overlay: '{{ application_source.mapping.overlay }}'
-          application: '{{ application_source.mapping.application }}'
-          prefix: '{{ application_source.mapping.prefix }}'
-          suffix: '{{ application_source.mapping.suffix}}'
-          cluster: '{{ application_source.mapping.cluster }}'
-          namespace: '{{ application_source.mapping.namespace }}'
 {% endif %}
-{% raw %}
   template:
     metadata:
-      name: '{{ .values.prefix }}{{ .values.team }}-{{ .values.application }}-{{ .chart.name }}{{ .values.suffix }}' 
+      name: '{{ application_source.mapping.prefix }}{{ application_source.mapping.team }}-{{ application_source.mapping.application }}{{ application_source.mapping.suffix }}' 
     spec:
       destination:
-        name: '{{ .values.cluster }}'
-        namespace: '{{ .values.namespace }}'
-      project: '{{ .values.overlay }}'
-{% endraw %}
+        name: '{{ application_source.mapping.cluster }}'
+        namespace: '{{ application_source.mapping.namespace }}'
+      project: '{{ application_source.mapping.overlay }}'
 {% if application_source_type.name == 'helm' %}
       source:
 {% raw %}
@@ -88,12 +72,24 @@ spec:
             - name: HELM_VALUES_FILE
               value: "{{ .path.path }}/values.yaml"
 {% endraw %}
+{% else if application_source_type.name == 'helm-source' %}
+      source:
+{% raw %}
+        repoURL: '{{ .values.repoURL }}'
+        path: "./"
+        plugin:
+          - name: HELM_APPLICATION
+            value: "{{ .path.segments 0 }}"
+          - name: HELM_VALUES_FILE
+            value: "{{ .path.path }}/values.yaml"
+
+{% endraw %}
 {% else %}
       source:
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
-        path: 'overlays/{{ .values.overlay }}'
 {% endraw %}
+        path: '{{ application_source.mapping.application }}/overlays/{{ application_source.mapping.overlay }}'
 {% endif %}
       syncPolicy:
         automated:
