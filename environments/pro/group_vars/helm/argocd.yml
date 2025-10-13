@@ -161,7 +161,7 @@ argocd:
         application: '{% raw %}{{ index .path.segments 1 }}{% endraw %}'
         overlay: '{% raw %}{{ index .path.segments 2 }}{% endraw %}'
         prefix: ''
-        suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | print "-%s" ) "" }}{% endraw %}'
+        suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}'
         cluster: '{% raw %}{{ has ( index .path.segments 2 ) ( list "production") | ternary "pro-cluster" "dev-cluster" }}{% endraw %}'
         namespace: '{% raw %}{{ has ( index .path.segments 2 ) (list "dev" ) | ternary "dev-" ""}}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( index .path.segments 0 ) (index .path.segments 2 ) }}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( last .path.segments | print "-%s" ) "" }}{% endraw %}'
 
@@ -172,19 +172,19 @@ argocd:
       types:
         - name: helm
           git_files_path:
-            - "deployments/*/helm-application.yaml"
-            - "deployments/*/*/helm-application.yaml"
+            - "*/deployments/*/helm-application.yaml"
+            - "*/deployments/*/*/helm-application.yaml"
         - name: kustomize
           git_files_path:
-            - "deployments/*/kustomize-application.yaml"
-            - "deployments/*/*/kustomize-application.yaml"
+            - "*/deployments/*/kustomize-application.yaml"
+            - "*/deployments/*/*/kustomize-application.yaml"
 
       mapping:
         # Define how all path elements are dealt with:
-        team: '{% raw %}{{ index .path.segments 0 }}{% endraw %}'
-        application: '{% raw %}{{ index .path.segments 1 }}{% endraw %}'
+        team: '{% raw %}{{ .repository }}{% endraw %}'
+        application: '{% raw %}{{ index .path.segments 0 }}{% endraw %}'
         overlay: '{% raw %}{{ index .path.segments 2 }}{% endraw %}'
         prefix: ''
-        suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | print "-%s" ) "" }}{% endraw %}'
+        suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}'
         cluster: '{% raw %}{{ has ( index .path.segments 2 ) ( list "production") | ternary "pro-cluster" "dev-cluster" }}{% endraw %}'
-        namespace: '{% raw %}{{ has ( index .path.segments 2 ) (list "dev" ) | ternary "dev-" ""}}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( index .path.segments 0 ) (index .path.segments 2 ) }}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( last .path.segments | print "-%s" ) "" }}{% endraw %}'
+        namespace: '{% raw %}{{ has ( index .path.segments 2 ) (list "dev" ) | ternary "dev-" ""}}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( index .path.segments 0 ) (index .path.segments 2 ) }}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}'
