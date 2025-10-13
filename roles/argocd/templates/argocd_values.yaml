@@ -2145,7 +2145,7 @@ repoServer:
         - mountPath: /home/argocd/cmp-server/config/vault-configuration.yaml
           subPath: vault-configuration.yaml
           name: vault-config
-          
+   
     - name: avp-helm
       command: [/var/run/argocd/argocd-cmp-server]
       image: {{ argocd_extra_container_images.helm_avp }}

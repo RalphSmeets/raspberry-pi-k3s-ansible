@@ -45,7 +45,7 @@ argocd:
           tlsClientConfig:
             insecure: false
       dev-cluster:
-        server: https://k3s-api.dev.k8s-frambozen.nl
+        server: "https://k3s-api.dev.k8s-frambozen.nl"
         domain: "dev.{{ universe.domain }}"
         config:
           tlsClientConfig:
@@ -137,5 +137,3 @@ argocd:
         suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}'
         cluster: '{% raw %}{{ has ( index .path.segments 2 ) ( list "production") | ternary "pro-cluster" "dev-cluster" }}{% endraw %}'
         namespace: '{% raw %}{{ .repository }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary .path.segments 2 "" }}{{ has ( index .path.segments 2 ) (list "development" ) | ternary "-dev-" ""}}{{ has ( index .path.segments 2 ) (list "test") | ternary "-tst" "" }}{{ has ( index .path.segments 2 ) (list "acceptance" ) | ternary "-acc" ""}}{{ has ( index .path.segments 2 ) (list "development") | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}''
-
- 
