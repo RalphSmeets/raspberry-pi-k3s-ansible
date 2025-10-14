@@ -21,7 +21,7 @@ spec:
               filters:
 {% if application_source_type.name == 'helm-source' %}
                 - pathsExist:
-                    - helm-chart
+                    - helm-source.yaml
 {% elif application_source_type.name == 'kustomize' %}
                 - pathExists:
                     - base/kustomize.yaml
@@ -59,8 +59,8 @@ spec:
         name: '{{ application_source.mapping.cluster }}'
         namespace: '{{ application_source.mapping.namespace }}'
       project: '{{ application_source.mapping.overlay }}'
-{% if application_source_type.name == 'helm' %}
       source:
+{% if application_source_type.name == 'helm' %}
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
         path: "./"
@@ -76,19 +76,18 @@ spec:
               value: "{{ .path.path }}/values.yaml"
 {% endraw %}
 {% elif application_source_type.name == 'helm-source' %}
-      source:
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
         path: "./"
         plugin:
-          - name: HELM_APPLICATION
-            value: "{{ .path.segments 0 }}"
-          - name: HELM_VALUES_FILE
-            value: "{{ .path.path }}/values.yaml"
+          env:
+            - name: HELM_APPLICATION
+              value: "{{ .path.segments 0 }}"
+            - name: HELM_VALUES_FILE
+              value: "{{ .path.path }}/values.yaml"
 
 {% endraw %}
 {% else %}
-      source:
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
 {% endraw %}

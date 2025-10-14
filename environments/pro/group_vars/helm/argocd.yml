@@ -120,7 +120,7 @@ argocd:
           git_files_path:
             - "*/deployments/*/helm-application.yaml"
             - "*/deployments/*/*/helm-application.yaml"
-        - name: helm-source
+        - name: helm_source
           git_files_path:
             - "*/deployments/*/helm-source.yaml"
             - "*/deployments/*/*/helm-source.yaml"
