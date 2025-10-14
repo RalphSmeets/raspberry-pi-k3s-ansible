@@ -59,6 +59,26 @@
       data:
         token: "{{ argocd.github.token | b64encode }}"
 
+- name: Add ArgoCD AppProject for different environments
+  kubernetes.core.k8s:
+    state: present
+    namespace: "{{ argocd_namespace }}"
+    template:
+      - path: argocd_app_project.j2
+  loop: "{{ argocd.app_projects }}"
+  loop_control:
+    loop_var: argocd_app_project
+
+- name: Add ArgoCD ApplicationSet on organisation
+  kubernetes.core.k8s:
+    state: present
+    namespace: "{{ argocd_namespace }}"
+    template:
+      - path: argocd_application_set.j2
+  loop: "{{ argocd.application_sources }}"
+  loop_control:
+    loop_var: application_source
+
 #- name: Setup repository credential templates
 #  ansible.builtin.include_tasks:
 #    file: setup_repository_credential_templates.yml
@@ -89,23 +109,3 @@
     wait: true
     wait_sleep: 5
     wait_timeout: 300
-
-- name: Add ArgoCD AppProject for different environments
-  kubernetes.core.k8s:
-    state: present
-    namespace: "{{ argocd_namespace }}"
-    template:
-      - path: argocd_app_project.j2
-  loop: "{{ argocd.app_projects }}"
-  loop_control:
-    loop_var: argocd_app_project
-
-- name: Add ArgoCD ApplicationSet on organisation
-  kubernetes.core.k8s:
-    state: present
-    namespace: "{{ argocd_namespace }}"
-    template:
-      - path: argocd_application_set.j2
-  loop: "{{ argocd.application_sources }}"
-  loop_control:
-    loop_var: application_source
