@@ -2123,6 +2123,35 @@ repoServer:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/config-management-plugins/
   ## Note: Supports use of custom Helm templates
   extraContainers:
+    - name: avp-helm-source
+      command: [/var/run/argocd/argocd-cmp-server]
+      image: {{ argocd_extra_container_images.helm_avp }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - mountPath: /var/run/argocd
+          name: var-files
+        - mountPath: /home/argocd/cmp-server/plugins
+          name: plugins
+        - mountPath: /tmp
+          name: tmp
+
+        # Register plugins into sidecar
+        - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: avp-helm-source.yaml
+          name: cmp-avp-plugin
+
+        # Mount tools into $PATH
+        - mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+          name: custom-tools
+
+        # Mount vault config secret!
+        - mountPath: /home/argocd/cmp-server/config/vault-configuration.yaml
+          subPath: vault-configuration.yaml
+          name: vault-config
+
     - name: avp-helm
       command: [/var/run/argocd/argocd-cmp-server]
       image: {{ argocd_extra_container_images.helm_avp }}
