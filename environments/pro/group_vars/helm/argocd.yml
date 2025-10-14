@@ -88,28 +88,28 @@ argocd:
   # - namespace: the namespace to deploy the applications to
 
   application_sources:
-    - name: deployments
+    - name: provisioning
       is_organisation: false
-      repo_url: "{{ git_clone_ssh_url }}:RalphSmeets/deployments.git"
+      repo_url: "{{ git_clone_ssh_url }}:RalphSmeets/pro-provisioning.git"
       types:
         - name: helm
           git_files_path:
-            - "*/*/*/helm-application.yaml"
-            - "*/*/*/*/helm-application.yaml"
+            - "*/helm-application.yaml"
+            - "*/helm-application.yaml"
         - name: kustomize
           git_files_path:
-            - "*/*/*/kustomize-application.yaml"
-            - "*/*/*/*/kustomize-application.yaml"
+            - "*/kustomize-application.yaml"
+            - "*/kustomize-application.yaml"
 
       mapping:
         # Define how all path elements are dealt with:
-        team: '{% raw %}{{ index .path.segments 0 }}{% endraw %}'
-        application: '{% raw %}{{ index .path.segments 1 }}{% endraw %}'
-        overlay: '{% raw %}{{ index .path.segments 2 }}{% endraw %}'
+        team: 'PCT'
+        application: '{% raw %}{{ index .path.segments 0 }}{% endraw %}'
+        overlay: 'pro-tooling'
         prefix: ''
-        suffix: '{% raw %}{{ has ( index .path.segments 2 ) (list "development" ) | ternary ( last .path.segments | printf "-%s" ) "" }}{% endraw %}'
-        cluster: '{% raw %}{{ has ( index .path.segments 2 ) ( list "production") | ternary "pro-cluster" "dev-cluster" }}{% endraw %}'
-        namespace: '{% raw %}{{ has ( index .path.segments 2 ) (list "dev" ) | ternary "dev-" ""}}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( index .path.segments 0 ) (index .path.segments 2 ) }}{{ has ( index .path.segments 2 ) (list "ont" "test") | ternary ( last .path.segments | print "-%s" ) "" }}{% endraw %}'
+        suffix: '-tool'
+        cluster: 'pro-cluster'
+        namespace: '{% raw %}{{ index .path.segments 0 }}-tool{% endraw %}'
 
     - name: k8s-frambozen
       is_organisation: true

@@ -59,9 +59,9 @@
       data:
         token: "{{ argocd.github.token | b64encode }}"
 
-- name: Setup repository credential templates
-  ansible.builtin.include_tasks:
-    file: setup_repository_credential_templates.yml
+#- name: Setup repository credential templates
+#  ansible.builtin.include_tasks:
+#    file: setup_repository_credential_templates.yml
 
 - name: Add extra rbac rules for argocd
   kubernetes.core.k8s:
