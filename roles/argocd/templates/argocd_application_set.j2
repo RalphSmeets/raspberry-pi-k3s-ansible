@@ -19,12 +19,15 @@ spec:
                 allBranches: false 
                 organization: '{{ application_source.organisation }}'
               filters:
-{% if application_source_type.name == 'helm' %}
+{% if application_source_type.name == 'helm-source' %}
                 - pathsExist:
-                    - charts
-{% else %}
+                    - helm-chart
+{% else if application_source_type.name == 'kustomize' %}
                 - pathExists:
                     - base/kustomize.yaml
+{% else %}
+                - pathExists:
+                    - helm-application.yaml
 {% endif %}
           - git:
               files:
