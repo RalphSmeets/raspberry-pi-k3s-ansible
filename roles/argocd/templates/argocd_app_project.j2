@@ -16,6 +16,7 @@ spec:
   destinations:
     - namespace: "{{ argocd_app_project.namespace }}"
       name: "{{ argocd_app_project.cluster }}"
+      server: {{ index (index argocd.cluster.server argocd_app_project.cluster) "server" }}
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

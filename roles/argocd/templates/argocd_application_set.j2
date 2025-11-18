@@ -18,14 +18,6 @@ spec:
               github:
                 allBranches: false 
                 organization: '{{ application_source.organisation }}'
-              filters:
-{% if application_source_type.name == 'helm' %}
-                - pathsExist:
-                    - charts
-{% else %}
-                - pathExists:
-                    - base/kustomize.yaml
-{% endif %}
           - git:
               files:
 {% for path in application_source_type.git_files_path %}
@@ -50,7 +42,7 @@ spec:
 {% endif %}
   template:
     metadata:
-      name: '{{ application_source.mapping.prefix }}{{ application_source.mapping.team }}-{{ application_source.mapping.application }}{{ application_source.mapping.suffix }}' 
+      name: '{{ application_source.mapping.team }}-{{ application_source.mapping.application }}{{ application_source.mapping.suffix }}' 
     spec:
       destination:
         name: '{{ application_source.mapping.cluster }}'
@@ -60,7 +52,7 @@ spec:
       source:
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
-        path: "./"
+        path: "{{ index .path.segments 0 }}"
         plugin:
           env:
             - name: HELM_REPO_URL
@@ -76,12 +68,12 @@ spec:
       source:
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
-        path: "./"
+        path: "{{ index .path.segments 0 }}"
         plugin:
           - name: HELM_APPLICATION
-            value: "{{ .path.segments 0 }}"
+            value: "{{  index .path.segments 0 }}"
           - name: HELM_VALUES_FILE
-            value: "{{ .path.path }}/values.yaml"
+            value: "deployments/{{ index .path.segements 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( index .path.segments 2) "" }}/values.yaml"
 
 {% endraw %}
 {% else %}
