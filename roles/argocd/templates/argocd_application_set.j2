@@ -64,7 +64,7 @@ spec:
             - name: HELM_VALUES_FILE
               value: "{{ .path.path }}/values.yaml"
 {% endraw %}
-{% else if application_source_type.name == 'helm-source' %}
+{% elif application_source_type.name == 'helm-source' %}
       source:
 {% raw %}
         repoURL: '{{ .values.repoURL }}'
