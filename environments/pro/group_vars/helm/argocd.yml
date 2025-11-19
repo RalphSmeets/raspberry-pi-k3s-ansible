@@ -25,7 +25,6 @@ argocd:
     admin_password: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['default_admin_password'] }}"
 
   tls:
-    enabled: true
     certificates:
       github_api: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['tls_cert_github_api'] }}"
       

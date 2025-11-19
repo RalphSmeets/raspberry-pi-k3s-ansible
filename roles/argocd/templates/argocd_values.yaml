@@ -361,7 +361,7 @@ configs:
     # -- TLS certificates for Git repositories
     # @default -- `{}` (See [values.yaml])
     certificates:
-{{ argocd.tls.certificates | to_nice_yaml(width=1337) | indent(6,true)}}
+{{ argocd.tls.certificates | to_nice_yaml(width=100) | indent(6,true)}}
 
   # ConfigMap for Config Management Plugins
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/
