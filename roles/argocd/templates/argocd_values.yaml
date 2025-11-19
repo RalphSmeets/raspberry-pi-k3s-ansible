@@ -355,7 +355,6 @@ configs:
   # Repository TLS certificates
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories-using-self-signed-tls-certificates-or-are-signed-by-custom-ca
   tls:
-{% if "tls" in argocd %}
     # -- Annotations to be added to argocd-tls-certs-cm configmap
     annotations: {}
 
@@ -363,7 +362,6 @@ configs:
     # @default -- `{}` (See [values.yaml])
     certificates:
 {{ argocd.tls.certificates | to_nice_yaml(width=1337) | indent(6,true)}}
-{% endif %}
 
   # ConfigMap for Config Management Plugins
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/
