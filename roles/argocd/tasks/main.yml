@@ -96,6 +96,14 @@
   loop_control:
     loop_var: argocd_app_project
 
+- name: Add ArgoCD ApplicationSet on organisation to output
+  template:
+    src: templates/argocd_application_set.j2
+    dest: "/tmp/argocd_application_set_{{ application_source.name }}.yaml"
+  loop: "{{ argocd.application_sources }}"
+  loop_control:
+    loop_var: application_source
+
 - name: Add ArgoCD ApplicationSet on organisation
   kubernetes.core.k8s:
     state: present

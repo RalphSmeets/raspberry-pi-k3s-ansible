@@ -62,7 +62,7 @@ spec:
             - name: HELM_CHART_VERSION
               value: '{{ .chart.version }}'
             - name: HELM_VALUES_FILE
-              value: "{{ .path.path }}/values.yaml"
+              value: '{{ .path.path }}/values.yaml'
 {% endraw %}
 {% elif application_source_type.name == 'helm-source' %}
       source:
@@ -71,10 +71,9 @@ spec:
         path: "{{ index .path.segments 0 }}"
         plugin:
           - name: HELM_APPLICATION
-            value: "{{  index .path.segments 0 }}"
+            value: '{{  index .path.segments 0 }}''
           - name: HELM_VALUES_FILE
-            value: deployments/{{ index .path.segements 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( index .path.segments 2) "" }}/values.yaml
-
+            value: 'deployments/{{ index .path.segements 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( index .path.segments 2) "" }}/values.yaml'
 {% endraw %}
 {% else %}
       source:
