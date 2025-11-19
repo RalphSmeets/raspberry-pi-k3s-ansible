@@ -364,7 +364,7 @@ configs:
     certificates:
     {% for cert_name, cert_value in argocd.tls.certificates.items() %}
       {{ cert_name }}: |
-        {{ cert_value | join('\n        ') }}
+        {{ cert_value | join('') }}
     {% endfor %}
 {% endif %}
 
