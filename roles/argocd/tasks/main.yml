@@ -65,6 +65,11 @@
     template:
       - path: argocd_extra_rbac.j2
 
+- name: Write ArgoCD helm chart values
+  template:
+    src: templates/argocd_values.yaml
+    dest: "/tmp/argocd_values_{{ universe.environment }}.yaml"
+
 - name: Install ArgoCD helm chart
   kubernetes.core.helm:
     update_repo_cache: true
