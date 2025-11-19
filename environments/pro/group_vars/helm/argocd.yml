@@ -118,16 +118,16 @@ argocd:
       types:
         - name: helm
           git_files_path:
-            - "deployments/*/helm-application.yaml"
-            - "deployments/*/*/helm-application.yaml"
+            - "*/deployments/*/helm-application.yaml"
+            - "*/deployments/*/*/helm-application.yaml"
         - name: helm-source
           git_files_path:
-            - "deployments/*/helm-source.yaml"
-            - "deployments/*/*/helm-source.yaml"
+            - "*/deployments/*/helm-source.yaml"
+            - "*/deployments/*/*/helm-source.yaml"
         - name: kustomize
           git_files_path:
-            - "deployments/*/kustomize-application.yaml"
-            - "deployments/*/*/kustomize-application.yaml"
+            - "*/deployments/*/kustomize-application.yaml"
+            - "*/deployments/*/*/kustomize-application.yaml"
 
       mapping:
         # Define how all path elements are dealt with:
