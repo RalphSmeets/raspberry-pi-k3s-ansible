@@ -71,7 +71,7 @@ spec:
         path: "{{ index .path.segments 0 }}"
         plugin:
           - name: HELM_APPLICATION
-            value: '{{  index .path.segments 0 }}''
+            value: '{{  index .path.segments 0 }}'
           - name: HELM_VALUES_FILE
             value: 'deployments/{{ index .path.segements 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( index .path.segments 2) "" }}/values.yaml'
 {% endraw %}
