@@ -23,9 +23,11 @@ argocd:
 
   server:
     admin_password: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['default_admin_password'] }}"
-  # pki2:
-  #   ca_cert: "{{ lookup('ansible.builtin.url', '{{ pki_ca_url }}/PKI2-CJIB-ROOT.pem', split_lines=true, wantlist=true ) }}"
 
+  tls:
+    certificates:
+      github_api: "{{ lookup('community.hashi_vault.vault_kv2_get', '{{ universe.environment }}/group_vars/helm/argocd', **vault_options )['secret']['tls_cert_github_api'] }}"
+ 
 # Argo CD needs to be able to connect to our private repositories. This is done using a repository template. This
 # template needs a name and the base of the url of the repository.
 
