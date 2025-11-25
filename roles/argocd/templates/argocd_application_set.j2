@@ -74,7 +74,7 @@ spec:
             - name: HELM_APPLICATION
               value: '{{  index .path.segments 0 }}'
             - name: HELM_VALUES_FILE
-              value: 'deployments/{{ index .path.segements 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( index .path.segments 2) "" }}/values.yaml'
+              value: 'deployments/{{ index .path.segments 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( last path.segments | printf "/%s" ) "" }}/values.yaml'
 {% endraw %}
 {% else %}
       source:
