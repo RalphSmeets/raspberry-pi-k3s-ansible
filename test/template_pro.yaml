@@ -14,7 +14,7 @@ template:
           {{ .repository }}{{ has ( index .path.segments 2 ) (list "development"
           ) | ternary "-dev" ""}}{{ has ( index .path.segments 2 ) (list "test")
           | ternary "-tst" "" }}{{ has ( index .path.segments 2 ) (list
-          "acceptance" ) | ternary "-acc" ""}}{{ has ( index .path.segments 2 )
+          "acceptance" ) | ternary "-acc" "" }}{{ has ( index .path.segments 2 )
           (list "development") | ternary ( last .path.segments | printf "-%s" )
           "" }}
       project: '{{ index .path.segments 2 }}'
@@ -23,12 +23,12 @@ template:
         plugin:
           env:
             - name: HELM_APPLICATION
-              value: '{{  index .path.segments 0 }}'
+              value: '{{ index .path.segments 0 }}'
             - name: HELM_VALUES_FILE
               value: >-
-                deployments/{{ index .path.segements 2 }}{{ has ( index
-                .path.segments 2 ) ( list "development" "test" ) | ternary (
-                index .path.segments 2) "" }}/values.yaml
+                deployments/{{ index .path.segments 2 }}{{ has ( index
+                .path.segments 2 ) ( list "development" ) | ternary ( last
+                path.segments | printf "/%s" ) "" }}/values.yaml
         repoURL: '{{ .values.repoURL }}'
       syncPolicy:
         automated:

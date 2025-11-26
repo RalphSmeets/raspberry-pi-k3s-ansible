@@ -16,12 +16,16 @@ spec:
         generators:
           - scmProvider:
               github:
-                allBranches: false 
                 organization: '{{ application_source.organisation }}'
           - git:
               files:
 {% for path in application_source_type.git_files_path %}
+{% if path | regex_search('^!') %}
+                - path: '{{ path[1:] }}'
+                  exclude: true
+{% else %}
                 - path: '{{ path }}'
+{% endif %}
 {% endfor %}
 {% raw %}
               repoURL: '{{ .url }}'
@@ -35,7 +39,12 @@ spec:
         revision: HEAD
         files:
 {% for path in application_source_type.git_files_path %}
+{% if path | regex_search('^!') %}
+          - path: '{{ path[1:] }}'
+            exclude: true
+{% else %}
           - path: '{{ path }}'
+{% endif %}
 {% endfor %}
         values:
           repoURL: '{{ application_source.repo_url }}'
@@ -71,10 +80,8 @@ spec:
         path: "{{ index .path.segments 0 }}"
         plugin:
           env:
-            - name: HELM_APPLICATION
-              value: '{{  index .path.segments 0 }}'
             - name: HELM_VALUES_FILE
-              value: 'deployments/{{ index .path.segments 2 }}{{ has ( index .path.segments 2 ) ( list "development" "test" ) | ternary ( last path.segments | printf "/%s" ) "" }}/values.yaml'
+              value: 'deployments/{{ index .path.segments 2 }}{{ has ( index .path.segments 2 ) ( list "development" ) | ternary ( last .path.segments | printf "/%s" ) "" }}/values.yaml'
 {% endraw %}
 {% else %}
       source:

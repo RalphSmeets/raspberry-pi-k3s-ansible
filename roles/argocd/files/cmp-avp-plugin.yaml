@@ -43,7 +43,7 @@ data:
           - sh
           - "-c"
           - |
-            helm template $ARGOCD_APP_NAME $ARGOCD_HELM_APPLICATION/helm-chart -n $ARGOCD_APP_NAMESPACE -f $ARGOCD_ENV_HELM_VALUES_FILE |
+            helm template $ARGOCD_APP_NAME ./helm-chart -n $ARGOCD_APP_NAMESPACE -f $ARGOCD_ENV_HELM_VALUES_FILE |
             argocd-vault-plugin generate - -c /home/argocd/cmp-server/config/vault-configuration.yaml
       lockRepo: false
 
