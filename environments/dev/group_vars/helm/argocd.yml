@@ -47,15 +47,12 @@ argocd:
           tlsClientConfig:
             insecure: false
       dev-cluster:
-        server: "https://k3s-api.dev.k8s-frambozen.nl"
+        server: "https://kubernetes.default.svc"
         domain: "dev.{{ universe.domain }}"
         config:
           tlsClientConfig:
             insecure: false
-            caData: "{{ lookup('community.hashi_vault.vault_kv2_get', 'dev/k8s_cluster', **vault_options )['secret']['caData'] }}"
-            certData: "{{ lookup('community.hashi_vault.vault_kv2_get', 'dev/k8s_cluster', **vault_options )['secret']['certData'] }}"
-            keyData: "{{ lookup('community.hashi_vault.vault_kv2_get', 'dev/k8s_cluster', **vault_options )['secret']['keyData'] }}"
-
+            
 # Define the AppProjects. These correspond with the different enironments. E.g. staging for development and testing applications and
 # production for production. Every project has a name, a namespace (wildcard allowed) to run on/in and a cluster to run on.
 # Please be aware that these are Argo CD projects and not projects of the organisation:
