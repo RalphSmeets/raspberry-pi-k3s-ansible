@@ -2403,9 +2403,9 @@ server:
       #       pathType: Prefix
       #       backend:
       #         service:
-      #           name: '{{ include "argo-cd.server.fullname" . }}'
+      #           name: '\{\{ include "argo-cd.server.fullname" . \}\}'
       #           port:
-      #             name: '{{ .Values.server.service.servicePortHttpName }}'
+      #             name: '\{\{ .Values.server.service.servicePortHttpName \}\}'
 
     # -- Additional TLS configuration for dedicated [gRPC-ingress]
     # @default -- `[]` (See [values.yaml])
@@ -3427,9 +3427,9 @@ applicationSet:
       #      pathType: Prefix
       #      backend:
       #        service:
-      #          name: '{{ include "argo-cd.applicationSet.fullname" . }}'
+      #          name: '\{\{ include "argo-cd.applicationSet.fullname" . \}\}'
       #          port:
-      #            name: '{{ .Values.applicationSet.service.portName }}'
+      #            name: '\{\{ .Values.applicationSet.service.portName \}\}'
 
     # -- Additional ingress TLS configuration
     # @default -- `[]` (See [values.yaml])
@@ -4213,4 +4213,3 @@ commitServer:
     # -- Default network policy rules used by commit server
     # @default -- `false` (defaults to global.networkPolicy.create)
     create: false
-    
