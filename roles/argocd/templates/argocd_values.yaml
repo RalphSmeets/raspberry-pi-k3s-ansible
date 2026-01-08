@@ -3427,9 +3427,9 @@ applicationSet:
       #      pathType: Prefix
       #      backend:
       #        service:
-      #          name: '\{\{ include "argo-cd.applicationSet.fullname" . \}\}'
+      #          name: '\\{\\{ include "argo-cd.applicationSet.fullname" . \\}\\}'
       #          port:
-      #            name: '\{\{ .Values.applicationSet.service.portName \}\}'
+      #            name: '\\{\\{ .Values.applicationSet.service.portName \\}\\}'
 
     # -- Additional ingress TLS configuration
     # @default -- `[]` (See [values.yaml])
