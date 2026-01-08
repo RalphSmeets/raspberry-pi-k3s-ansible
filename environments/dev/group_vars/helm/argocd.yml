@@ -93,12 +93,12 @@ argocd:
           git_files_path:
             - "*/*/*/helm-application.yaml"
             - "*/*/*/*/helm-application.yaml"
-            - "!*/*/production/*/helm-application.yaml"
+            - "!*/*/production/helm-application.yaml"
         - name: kustomize
           git_files_path:
             - "*/*/*/kustomize-application.yaml"
             - "*/*/*/*/kustomize-application.yaml"
-            - "!*/*/production/*/kustomize-application.yaml"
+            - "!*/*/production/kustomize-application.yaml"
 
       mapping:
         # Define how all path elements are dealt with:
