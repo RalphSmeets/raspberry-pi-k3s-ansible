@@ -380,7 +380,7 @@ configs:
     # -- TLS certificates for Git repositories
     # @default -- `{}` (See [values.yaml])
     certificates:
-{{ argocd.tls.certificates | to_nice_yaml(width=100) | indent(6,true)}}
+{{ argocd.tls.certificates | to_nice_yaml(width=100) | indent(6,true) }}
   # -- Specifies if the argocd-tls-certs-cm configmap should be created by Helm.
     create: true
 
@@ -523,8 +523,7 @@ configs:
     ## Custom secrets. Useful for injecting SSO secrets into environment variables.
     ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
     ## Note that all values must be non-empty.
-    extra:
-      {}
+    extra: {}
       # LDAP_PASSWORD: "mypassword"
 
     # -- Bcrypt hashed admin password
