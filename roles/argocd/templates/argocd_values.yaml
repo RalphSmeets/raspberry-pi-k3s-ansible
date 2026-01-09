@@ -169,6 +169,11 @@ controller:
       cpu: 250m
       memory: 256Mi
 
+## Dex
+dex:
+  # -- Enable dex
+  enabled: false
+ 
 ## Redis
 redis:
   # -- Resource limits and requests for redis
@@ -434,11 +439,11 @@ repoServer:
   # -- Resource limits and requests for the repo server pods
   resources:
     limits:
-      cpu: 200m
-      memory: 128Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 40m
-      memory: 64Mi
+      cpu: 50m
+      memory: 256Mi
 
   ## Readiness and liveness probes for Repo Server
   ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
