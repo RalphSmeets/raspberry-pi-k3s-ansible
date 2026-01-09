@@ -35,13 +35,13 @@ argocd:
   cluster:
     credentials:
       pro-cluster:
-        server: "https://k3s-api.pro.k8s-frambozen.nl"
+        server: https://kubernetes.default.svc
         domain: "{{ universe.environment }}.{{ universe.domain }}"
         config:
           tlsClientConfig:
             insecure: false
       tools-cluster:
-        server: "https://k3s-api.tools.k8s-frambozen.nl"
+        server: https://kubernetes.default.svc
         domain: "tools.{{ universe.domain }}"
         config:
           tlsClientConfig:
