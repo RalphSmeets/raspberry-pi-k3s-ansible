@@ -282,6 +282,20 @@ server:
     # -- Number of seconds after which the [probe] times out
     timeoutSeconds: 1
     
+  # TLS certificate configuration via Secret
+  ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
+  certificateSecret:
+    # -- Create argocd-server-tls secret
+    enabled: true
+    # -- Annotations to be added to argocd-server-tls secret
+    annotations: {}
+    # -- Labels to be added to argocd-server-tls secret
+    labels: {}
+    # -- Private Key of the certificate
+    key: ''
+    # -- Certificate data
+    crt: ''
+
 ## Repo Server
 repoServer:
   # -- Additional containers to be added to the repo server pod
