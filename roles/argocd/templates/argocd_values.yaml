@@ -64,7 +64,6 @@ configs:
           hs.status = "Healthy"
           return hs
 
-
   # Argo CD configuration parameters
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
   params:
@@ -130,7 +129,6 @@ configs:
     # -- Specifies if the argocd-tls-certs-cm configmap should be created by Helm.
     create: true
 
-
   # -- Provide one or multiple [external cluster credentials]
   # @default -- `{}` (See [values.yaml])
   ## Ref:
@@ -139,12 +137,6 @@ configs:
   ## - https://argo-cd.readthedocs.io/en/stable/user-guide/projects/#project-scoped-repositories-and-clusters
   clusterCredentials:
 {{ argocd.cluster.credentials | to_nice_yaml(width=1337) | indent(4,true) }}
-
-
- 
-
-
-
   
   # Argo CD sensitive data
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
@@ -154,8 +146,7 @@ configs:
     
     # -- Shared secret for authenticating GitHub webhook events
     githubSecret: "{{ argocd.github.webhook.secret }}"
-    
-    
+        
     # -- Bcrypt hashed admin password
     ## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
     ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
@@ -163,34 +154,23 @@ configs:
     # -- Admin password modification time. Eg. `"2006-01-02T15:04:05Z"`
     # @default -- `""` (defaults to current time)
     argocdServerAdminPasswordMtime: ""
-
   
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 
-
 ## Application controller
-controller:
-
-
-
-
-
-  
+controller:  
   # -- Resource limits and requests for the application controller pods
   resources:
     limits:
-    cpu: 500m
+      cpu: 500m
       memory: 512Mi
     requests:
       cpu: 250m
       memory: 256Mi
 
-  
-
 ## Redis
 redis:
-
   # -- Resource limits and requests for redis
   resources:
     limits:
@@ -211,8 +191,6 @@ server:
       cpu: 100m
       memory: 64Mi
 
-  
-  
   # Argo CD server ingress configuration
   ingress:
     # -- Enable an ingress resource for the Argo CD server
@@ -282,7 +260,6 @@ server:
       # - hosts:
       #   - argocd.example.com
       #   secretName: your-certificate-name
-
     
 ## Repo Server
 repoServer:
