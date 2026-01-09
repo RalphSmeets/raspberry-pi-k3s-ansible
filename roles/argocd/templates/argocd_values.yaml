@@ -185,10 +185,10 @@ server:
   # -- Resource limits and requests for the Argo CD server
   resources:
     limits:
-      cpu: 100m
+      cpu: 400m
       memory: 128Mi
     requests:
-      cpu: 100m
+      cpu: 200m
       memory: 64Mi
 
   # Argo CD server ingress configuration
@@ -260,6 +260,22 @@ server:
       # - hosts:
       #   - argocd.example.com
       #   secretName: your-certificate-name
+
+  ## Readiness and liveness probes for default backend
+  ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+  readinessProbe:
+    # -- Enable Kubernetes readiness probe for Repo Server
+    enabled: true
+    # -- Minimum consecutive failures for the [probe] to be considered failed after having succeeded
+    failureThreshold: 3
+    # -- Number of seconds after the container has started before [probe] is initiated
+    initialDelaySeconds: 60
+    # -- How often (in seconds) to perform the [probe]
+    periodSeconds: 10
+    # -- Minimum consecutive successes for the [probe] to be considered successful after having failed
+    successThreshold: 1
+    # -- Number of seconds after which the [probe] times out
+    timeoutSeconds: 1
     
 ## Repo Server
 repoServer:
@@ -418,10 +434,10 @@ repoServer:
   # -- Resource limits and requests for the repo server pods
   resources:
     limits:
-      cpu: 50m
+      cpu: 200m
       memory: 128Mi
     requests:
-      cpu: 10m
+      cpu: 40m
       memory: 64Mi
 
   ## Readiness and liveness probes for Repo Server
@@ -450,7 +466,7 @@ applicationSet:
   # -- Resource limits and requests for the ApplicationSet controller pods.
   resources:
     limits:
-    #   cpu: 100m
+      cpu: 400m
       memory: 128Mi
     requests:
       cpu: 100m
@@ -470,7 +486,7 @@ notifications:
   # -- Resource limits and requests for the notifications controller
   resources:
     limits:
-      cpu: 100m
+      cpu: 200m
       memory: 128Mi
     requests:
       cpu: 100m
